@@ -1,4 +1,22 @@
 services:
+
+  react-app:
+    image: react-app
+    build:
+      dockerfile: Dockerfile
+      context: "./client"
+    container_name: reactappcontainer
+    stdin_open: true
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
+    networks:
+      - mynetwork
+    environment:
+      SERVICES_TAGS: prod
+      SERVICE_NAME: reactappservice
+
   mysqldb:
     image: mysql
     container_name: mysqlcontainer
@@ -23,7 +41,9 @@ services:
 
   nodeapp:
     container_name: nodeappcontainer
-    build: .
+    build:
+      dockerfile: Dockerfile
+      context: "./server"
     image: nodeapp:v1
     volumes:
       - $HOME/nodeapp:/code
@@ -36,13 +56,13 @@ services:
       DB_CONNECTION_LIMIT: 20
       SERVICES_TAGS: prod
       SERVICE_NAME: nodeappservice
-      SERVER_PORT: 3000
+      SERVER_PORT: 5000
     networks:
       - mynetwork
     ports:
-      - 3000:3000
+      - 5000:5000
     expose:
-      - 3000
+      - 5000
     depends_on:
       - mysqldb
 
