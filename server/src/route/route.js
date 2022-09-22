@@ -1,7 +1,12 @@
 import express from 'express';
-import { getLongUrl } from '../controller/controller.js';
+import { getLongURL, insertNewURL, getAllURLs, deleteURL } from '../controller/controller.js';
 
 const urlRoutes = express.Router();
-urlRoutes.route('/').post(getLongUrl);
+urlRoutes.route('/').post(insertNewURL)
+
+urlRoutes.route('/:short_url').get(getLongURL).delete(deleteURL)
+
+urlRoutes.route('/retrieveAll').get(getAllURLs)
+
 
 export default urlRoutes;
