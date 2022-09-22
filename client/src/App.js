@@ -1,7 +1,17 @@
 import logo from './logo.svg';
 import './App.css';
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import { shortenURL } from './services/api';
 
 function App() {
+
+  const sample = "sample URL"
+
+  const handleClick = () => {
+    shortenURL(sample)
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -17,6 +27,7 @@ function App() {
         >
           Learn React
         </a>
+        <Button variant="contained" onClick={handleClick}>Hello World</Button>
       </header>
     </div>
   );

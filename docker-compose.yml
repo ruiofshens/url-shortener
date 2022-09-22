@@ -36,7 +36,7 @@ services:
     expose:
       - 3306
     volumes:
-      - ./init_db/init.sql:/docker-entrypoint-initdb.d/0_init.sql
+      - ./server/init_db/init.sql:/docker-entrypoint-initdb.d/0_init.sql
       - $HOME/database:/var/lib/mysql
 
   nodeapp:
