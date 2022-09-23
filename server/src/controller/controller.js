@@ -10,6 +10,9 @@ import {
 
 /**
 * Queries database using a given shortURL for the corresponding longURL
+* Can be used to redirect user to the longURL when shortURL is entered
+* (e.g. for a website www.samplewebsite.com that has a shortURL of aX7j-9k76E,
+* entering http://18.182.48.215:5000/shorten/aX7j-9k76E will redirect user to www.samplewebsite.com)
 */
 export const getLongURL = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching long URL`);
@@ -21,12 +24,11 @@ export const getLongURL = async (req, res) => {
                 .send(new Response(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR, 'Retrieving URL failed', null));
         } else {
             logger.info(`${JSON.stringify(result)}`);
-            if (result.length > 0) {
-                res.status(StatusCodes.OK)
-                    .send(new Response(StatusCodes.OK, ReasonPhrases.OK, 'URL retrieved', { longURL: result[0].long_url }));
+            if (result.length > 0) { //result[0].long_url
+                res.redirect(result[0].long_url);
             } else {
-                res.status(StatusCodes.OK)
-                    .send(new Response(StatusCodes.OK, ReasonPhrases.OK, 'No such URL exists in the database', null));
+                res.status(StatusCodes.NOT_FOUND)
+                    .send(new Response(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND, 'No URL found', null));
             }
         }
     });
