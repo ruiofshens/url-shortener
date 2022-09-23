@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.0] 🎉 - 2022-09-23
+### Added
+- Added README.md with overview of application and setup instructions
+
+### Changed
+- Tidied up client folders and code slightly
+
 ## [0.5.0] - 2022-09-23
 ### Added
 - Implemented API in frontend interface for shortening URL

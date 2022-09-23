@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -36,11 +36,9 @@ function URLShortenerPage() {
     }
 
     const handleClick = async () => {
-        console.log('Clicked');
         const shortURL = await shortenURL(longURL);
         setDisplayedShortURL(shortURL);
     }
-
 
     return (
         <>
