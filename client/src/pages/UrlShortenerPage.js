@@ -114,8 +114,11 @@ function URLShortenerPage() {
                             />
                             {displayedShortURL &&
                             <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 5 }}>
-                    Success! Your shortened URL is: {displayedShortURL}
-                </Typography>}
+                                Success! Your shortened URL is:
+                                <Link href={` http://localhost:5000/shorten/${displayedShortURL}`}>
+                                    http://localhost:5000/shorten/{displayedShortURL}
+                                </Link>
+                            </Typography>}
                         </Box>
                     </CardContent>
                 </Card>

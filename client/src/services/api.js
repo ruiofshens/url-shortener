@@ -11,9 +11,10 @@ export const shortenURL = async (longURL) => {
         return data.data.shortURL;
     }
     catch (error) {
-        console.log(error);
         console.log(error.message);
-        alert(error.message);
+        if (error.response.status === 422) {
+            alert(`The provided URL has been shortened previously: http://localhost:5000/shorten/${error.response.data.data.shortURL}`);
+        }
     }
     
 }
