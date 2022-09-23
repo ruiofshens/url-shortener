@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -14,15 +14,33 @@ import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
+import { shortenURL } from '../services/api';
+
 const cardInfo =
 {
     title: 'Shorten your URL here!',
-    subheader: 'Free-of-charge, no ads, no tracking',
+    subheader: 'Free-of-charge, no ads and no tracking 😊',
     textField: 'Enter your URL!',
     buttonVariant: 'contained',
 }
 
 function URLShortenerPage() {
+
+    const[longURL, setLongURL] = React.useState('');
+
+    const [displayedShortURL, setDisplayedShortURL] = useState('');
+
+    const handleChange = (event) => {
+        setLongURL(event.target.value);
+        setDisplayedShortURL("")
+    }
+
+    const handleClick = async () => {
+        console.log('Clicked');
+        const shortURL = await shortenURL(longURL);
+        setDisplayedShortURL(shortURL);
+    }
+
 
     return (
         <>
@@ -75,8 +93,9 @@ function URLShortenerPage() {
                                 display: 'flex',
                                 height: '25vh',
                                 width: "65vw",
-                                justifyContent: 'center',
+                                justifyContent: 'space-around',
                                 alignItems: 'center',
+                                flexDirection: 'column',
                             }}
                         >
                             <TextField
@@ -84,11 +103,19 @@ function URLShortenerPage() {
                                 id="outlined-basic"
                                 label={cardInfo.textField}
                                 variant="outlined"
+                                onChange={handleChange}
                                 InputProps={{ endAdornment: 
-                                <Button variant={cardInfo.buttonVariant}>
+                                <Button 
+                                    variant={cardInfo.buttonVariant}
+                                    onClick={handleClick}
+                                >
                                     <IosShareIcon sx={{ color: "#191919" }} />
                                 </Button> }}      
                             />
+                            {displayedShortURL &&
+                            <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 5 }}>
+                    Success! Your shortened URL is: {displayedShortURL}
+                </Typography>}
                         </Box>
                     </CardContent>
                 </Card>
