@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS urls;
 
 CREATE TABLE urls (
     short_url VARCHAR(255) NOT NULL,
-    long_url VARCHAR(255) NOT NULL,
+    long_url VARCHAR(510) NOT NULL, -- more space needed for the long urls
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (short_url),
     CONSTRAINT UQ_long_url UNIQUE (long_url)
