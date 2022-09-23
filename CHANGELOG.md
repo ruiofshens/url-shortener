@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.5.0] - 2022-09-23
+### Added
+- Implemented API in frontend interface for shortening URL
+- Added alert for user if URL entered already exists in the database + output existing short URL
+
+### Changed
+- Routes for server updated to alow automatic redirection of short URLs to actual URLs
+
+### Fixed
+- DB error when long urls are too long by increasing size allocated from VARCHAR(255) to VARCHAR(510)
+- Fixed route for helper API getAllURLs()
+
 ## [0.4.0] - 2022-09-23
 ### Added
 - Add frontend interface
