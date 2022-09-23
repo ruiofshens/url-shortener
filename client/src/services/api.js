@@ -11,6 +11,7 @@ export const shortenURL = async (longURL) => {
         return data.data.shortURL;
     }
     catch (error) {
+        console.log(error);
         console.log(error.message);
         alert(error.message);
     }

@@ -4,9 +4,8 @@ import { getLongURL, insertNewURL, getAllURLs, deleteURL } from '../controller/c
 const urlRoutes = express.Router();
 urlRoutes.route('/').post(insertNewURL)
 
-urlRoutes.route('/:short_url').get(getLongURL).delete(deleteURL)
-
 urlRoutes.route('/retrieveAll').get(getAllURLs)
 
+urlRoutes.route('/:short_url').get(getLongURL).delete(deleteURL)
 
 export default urlRoutes;
