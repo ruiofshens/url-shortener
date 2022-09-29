@@ -6,15 +6,17 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Container from '@mui/material/Container';
+import FormControl from '@mui/material/FormControl';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import IosShareIcon from '@mui/icons-material/IosShare';
 import Link from '@mui/material/Link';
 import LinkIcon from '@mui/icons-material/Link';
+import {Radio, RadioGroup, FormControlLabel, FormLabel} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import { shortenURL } from '../services/api';
+import { shortenURL, updateURL } from '../services/api';
 
 const cardInfo =
 {
@@ -26,9 +28,22 @@ const cardInfo =
 
 function URLShortenerPage() {
 
-    const[longURL, setLongURL] = React.useState('');
+    const [longURL, setLongURL] = useState('');
+    const [shortURL, setShortURL] = useState('');
+
+    const [mode, setMode] = useState('add');
 
     const [displayedShortURL, setDisplayedShortURL] = useState('');
+
+    const handleShortURLChange = (event) => {
+        console.log(event.target.value);
+        setShortURL(event.target.value);
+    }
+
+    const handleRadioClick = (event) => {
+        console.log(event.target.value)
+        setMode(event.target.value);
+    }
 
     const handleChange = (event) => {
         setLongURL(event.target.value);
@@ -36,8 +51,15 @@ function URLShortenerPage() {
     }
 
     const handleClick = async () => {
-        const shortURL = await shortenURL(longURL);
-        setDisplayedShortURL(shortURL);
+        if (mode === "add"){
+            const shortURL = await shortenURL(longURL);
+            setDisplayedShortURL(shortURL);
+        }
+        else {
+            const newShortURL = await updateURL(shortURL, longURL);
+            setDisplayedShortURL(newShortURL);
+        }
+        
     }
 
     return (
@@ -110,6 +132,27 @@ function URLShortenerPage() {
                                     <IosShareIcon sx={{ color: "#191919" }} />
                                 </Button> }}      
                             />
+                            {
+                                mode === "update" && <TextField
+                                id="outlined-basic"
+                                label={"short url"}
+                                variant="outlined"
+                                onChange={handleShortURLChange}    
+                            />
+                            }
+                            
+                            <FormControl>
+                                <FormLabel id="demo-radio-buttons-group-label">What do you want to do?</FormLabel>
+                                <RadioGroup
+                                    row
+                                    aria-labelledby="demo-radio-buttons-group-label"
+                                    defaultValue="add"
+                                    name="radio-buttons-group"
+                                >
+                                    <FormControlLabel value="add" control={<Radio onChange={handleRadioClick} />} label="Add New" />
+                                    <FormControlLabel value="update" control={<Radio onChange={handleRadioClick} />} label="Update Existing" />
+                                </RadioGroup>
+                            </FormControl>
                             {displayedShortURL &&
                             <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 5 }}>
                                 Success! Your shortened URL is:

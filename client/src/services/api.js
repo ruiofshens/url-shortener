@@ -16,5 +16,21 @@ export const shortenURL = async (longURL) => {
             alert(`The provided URL has been shortened previously: http://localhost:5000/shorten/${error.response.data.data.shortURL}`);
         }
     }
-    
+}
+
+export const updateURL = async (shortURL, longURL) => {
+    console.log("updating");
+    try {
+        const { data } = await axios.put(url + "/" + shortURL, {
+            long_url: longURL
+        });
+        console.log(data)
+        return data.data.shortURL;
+    }
+    catch (error) {
+        console.log(error.message);
+        // if (error.response.status === 422) {
+        //     alert(`The provided URL has been shortened previously: http://localhost:5000/shorten/${error.response.data.data.shortURL}`);
+        // }
+    }
 }

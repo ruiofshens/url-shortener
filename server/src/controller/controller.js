@@ -33,6 +33,21 @@ export const getLongURL = async (req, res) => {
         }
     });
 }
+export const updateLongURL = async (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, updating long URL`);
+
+    database.query(QUERY.UPDATE_URL, [req.body.long_url, req.params.short_url, req.params.short_url], (err, result) => {
+        if (err) {
+            logger.error(`${req.method} ${req.originalUrl}, ${err}`);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+                .send(new Response(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR, 'Retrieving URL failed', null));
+        } else {
+            logger.info(`${JSON.stringify(result)}`);
+            res.status(StatusCodes.OK)
+            .send(new Response(StatusCodes.OK, ReasonPhrases.OK, 'URL updated', { result: result[1][0] }));
+        }
+    });
+}
 
 /**
 * Generates unique shortURL for a new longURL and add mapping into database
