@@ -36,12 +36,10 @@ function URLShortenerPage() {
     const [displayedShortURL, setDisplayedShortURL] = useState('');
 
     const handleShortURLChange = (event) => {
-        console.log(event.target.value);
         setShortURL(event.target.value);
     }
 
     const handleRadioClick = (event) => {
-        console.log(event.target.value)
         setMode(event.target.value);
     }
 
@@ -96,9 +94,10 @@ function URLShortenerPage() {
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                minHeight="75vh"
+                marginTop={8}
             >
-                <Card width="30vw">
+                <Card
+                sx = {{flexGrow: "1", mx: "10%"}}>
                     <CardHeader
                         title={cardInfo.title}
                         subheader={cardInfo.subheader}
@@ -111,19 +110,28 @@ function URLShortenerPage() {
                         <Box
                             sx={{
                                 display: 'flex',
-                                height: '25vh',
-                                width: "65vw",
-                                justifyContent: 'space-around',
-                                alignItems: 'center',
+                                justifyContent: 'space-between',
                                 flexDirection: 'column',
                             }}
                         >
+
+                            {
+                                mode === "update" && <TextField
+                                id="outlined-basic"
+                                label={"Enter existing short URL!"}
+                                variant="outlined"
+                                onChange={handleShortURLChange}  
+                                sx={{ marginTop: 3, width: "75%"}}  
+                            />}
+                            
                             <TextField
                                 fullWidth
                                 id="outlined-basic"
                                 label={cardInfo.textField}
                                 variant="outlined"
                                 onChange={handleChange}
+                                padding="10px"
+                                sx={{ my: 3}}
                                 InputProps={{ endAdornment: 
                                 <Button 
                                     variant={cardInfo.buttonVariant}
@@ -132,16 +140,8 @@ function URLShortenerPage() {
                                     <IosShareIcon sx={{ color: "#191919" }} />
                                 </Button> }}      
                             />
-                            {
-                                mode === "update" && <TextField
-                                id="outlined-basic"
-                                label={"short url"}
-                                variant="outlined"
-                                onChange={handleShortURLChange}    
-                            />
-                            }
                             
-                            <FormControl>
+                            <FormControl sx={{ alignSelf: 'center' }}>
                                 <FormLabel id="demo-radio-buttons-group-label">What do you want to do?</FormLabel>
                                 <RadioGroup
                                     row
@@ -155,7 +155,7 @@ function URLShortenerPage() {
                             </FormControl>
                             {displayedShortURL &&
                             <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 5 }}>
-                                Success! Your shortened URL is:
+                                Success! Your new shortened URL is:
                                 <Link href={` http://localhost:5000/shorten/${displayedShortURL}`}>
                                     http://localhost:5000/shorten/{displayedShortURL}
                                 </Link>

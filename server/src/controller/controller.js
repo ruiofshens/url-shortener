@@ -33,6 +33,7 @@ export const getLongURL = async (req, res) => {
         }
     });
 }
+
 export const updateLongURL = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, updating long URL`);
 
@@ -43,8 +44,14 @@ export const updateLongURL = async (req, res) => {
                 .send(new Response(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR, 'Retrieving URL failed', null));
         } else {
             logger.info(`${JSON.stringify(result)}`);
-            res.status(StatusCodes.OK)
-            .send(new Response(StatusCodes.OK, ReasonPhrases.OK, 'URL updated', { result: result[1][0] }));
+            if (result[0].affectedRows === 0){ // Corresponding shortURL doesn't exist
+                res.status(StatusCodes.UNPROCESSABLE_ENTITY) 
+                    .send(new Response(StatusCodes.UNPROCESSABLE_ENTITY, ReasonPhrases.UNPROCESSABLE_ENTITY, 'Short URL entered does not exist', { shortURL: req.params.short_url }));
+            }
+            else {
+                res.status(StatusCodes.OK)
+                .send(new Response(StatusCodes.OK, ReasonPhrases.OK, 'URL updated', { shortURL: result[1][0].short_url }));
+            }
         }
     });
 }
