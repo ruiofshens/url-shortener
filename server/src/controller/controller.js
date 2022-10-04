@@ -34,6 +34,28 @@ export const getLongURL = async (req, res) => {
     });
 }
 
+export const updateLongURL = async (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, updating long URL`);
+
+    database.query(QUERY.UPDATE_URL, [req.body.long_url, req.params.short_url, req.params.short_url], (err, result) => {
+        if (err) {
+            logger.error(`${req.method} ${req.originalUrl}, ${err}`);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+                .send(new Response(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR, 'Retrieving URL failed', null));
+        } else {
+            logger.info(`${JSON.stringify(result)}`);
+            if (result[0].affectedRows === 0){ // Corresponding shortURL doesn't exist
+                res.status(StatusCodes.UNPROCESSABLE_ENTITY) 
+                    .send(new Response(StatusCodes.UNPROCESSABLE_ENTITY, ReasonPhrases.UNPROCESSABLE_ENTITY, 'Short URL entered does not exist', { shortURL: req.params.short_url }));
+            }
+            else {
+                res.status(StatusCodes.OK)
+                .send(new Response(StatusCodes.OK, ReasonPhrases.OK, 'URL updated', { shortURL: result[1][0].short_url }));
+            }
+        }
+    });
+}
+
 /**
 * Generates unique shortURL for a new longURL and add mapping into database
 * If longURL already exists in database, the current shortURL is returned instead 
